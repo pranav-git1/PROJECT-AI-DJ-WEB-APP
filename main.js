@@ -1,7 +1,10 @@
+song = "";
 leftWristX = 0;
 leftWristY = 0;
 rightWristX = 0;
 rightWristY = 0;
+
+score_left_wrist = 0;
 
 function preload() {
     first = loadSound("first.mp3");
@@ -19,6 +22,18 @@ function setup() {
 
 function draw() {
     image(video, 0, 0, 600, 400);
+    fill("#ff0000");
+    stroke("#ff0000");
+    var something = first.isPlaying()
+    if(score_left_wrist > 0.2){
+        circle(leftWristX, leftWristY, 20);
+        second.stop();
+        if(first.isPlaying() == false){
+            first.play();
+            document.getElementById("song").innerHTML = "You are not alone song"
+        }
+    }
+
 }
 
 function modelLoaded() {
@@ -28,6 +43,8 @@ function modelLoaded() {
 function gotPoses(results) {
     if (results.length > 0) {
         console.log(results);
+
+        score_left_wrist = results[0].pose.keypoints[9].score;
 
         leftWristX = results[0].pose.X;
         leftWristY = results[0].pose.Y;
